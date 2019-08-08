@@ -106,8 +106,8 @@
           <label for="filter__archive" class="filter__label"
             >Archive <span class="filter__archive-count">115</span></label
           >
-        </section>`,
-    board: () => `<section class="board container">
+        </section>
+        <section class="board container">
           <div class="board__filter-list">
             <a href="#" class="board__filter">SORT BY DEFAULT</a>
             <a href="#" class="board__filter">SORT BY DATE up</a>
@@ -117,7 +117,7 @@
           
           </div>
         </section>`,
-    form: () => `<article class="card card--edit card--black">
+    taskForm: () => `<article class="card card--edit card--black">
               <form class="card__form" method="get">
                 <div class="card__inner">
                   <div class="card__control">
@@ -328,8 +328,7 @@
                 </div>
               </form>
             </article>`,
-    taskCards: {
-      cardBlack: () => `<article class="card card--black">
+    taskCard: () => `<article class="card card--black">
               <div class="card__form">
                 <div class="card__inner">
                   <div class="card__control">
@@ -388,117 +387,6 @@
                 </div>
               </div>
             </article>`,
-      cardBlue: () => `<article class="card card--blue">
-              <div class="card__form">
-                <div class="card__inner">
-                  <div class="card__control">
-                    <button type="button" class="card__btn card__btn--edit">
-                      edit
-                    </button>
-                    <button type="button" class="card__btn card__btn--archive">
-                      archive
-                    </button>
-                    <button
-                      type="button"
-                      class="card__btn card__btn--favorites card__btn--disabled"
-                    >
-                      favorites
-                    </button>
-                  </div>
-                  <div class="card__color-bar">
-                    <svg class="card__color-bar-wave" width="100%" height="10">
-                      <use xlink:href="#wave"></use>
-                    </svg>
-                  </div>
-                  <div class="card__textarea-wrap">
-                    <p class="card__text">Example default task with custom color.</p>
-                  </div>
-                  <div class="card__settings">
-                    <div class="card__details">
-                      <div class="card__dates">
-                        <div class="card__date-deadline">
-                          <p class="card__input-deadline-wrap">
-                            <span class="card__date">23 September</span>
-                            <span class="card__time">11:15 PM</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div class="card__hashtag">
-                        <div class="card__hashtag-list">
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #todo
-                            </span>
-                          </span>
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #personal
-                            </span>
-                          </span>
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #important
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>`,
-      cardYellow: () => `<article class="card card--yellow">
-              <div class="card__form">
-                <div class="card__inner">
-                  <div class="card__control">
-                    <button type="button" class="card__btn card__btn--edit">
-                      edit
-                    </button>
-                    <button type="button" class="card__btn card__btn--archive">
-                      archive
-                    </button>
-                    <button
-                      type="button"
-                      class="card__btn card__btn--favorites card__btn--disabled"
-                    >
-                      favorites
-                    </button>
-                  </div>
-                  <div class="card__color-bar">
-                    <svg class="card__color-bar-wave" width="100%" height="10">
-                      <use xlink:href="#wave"></use>
-                    </svg>
-                  </div>
-                  <div class="card__textarea-wrap">
-                    <p class="card__text">Example default task with custom color and without date.</p>
-                  </div>
-                  <div class="card__settings">
-                    <div class="card__details">
-                      <div class="card__hashtag">
-                        <div class="card__hashtag-list">
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #todo
-                            </span>
-                          </span>
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #personal
-                            </span>
-                          </span>
-                          <span class="card__hashtag-inner">
-                            <span class="card__hashtag-name">
-                              #important
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>`
-    },
     loadButton: () => `<button class="load-more" type="button">load more</button>`
   };
 
@@ -510,7 +398,6 @@
 
   renderElement(mainContainer, templates.search());
   renderElement(mainContainer, templates.filters());
-  renderElement(mainContainer, templates.board());
 
   const menuContainer = mainContainer.querySelector(`.main__control`);
 
@@ -522,9 +409,11 @@
 
   const tasksContainer = boardElement.querySelector(`.board__tasks`);
 
-  renderElement(tasksContainer, templates.form());
-  renderElement(tasksContainer, templates.taskCards.cardBlack());
-  renderElement(tasksContainer, templates.taskCards.cardBlue());
-  renderElement(tasksContainer, templates.taskCards.cardYellow());
+  renderElement(tasksContainer, templates.taskForm());
+  
+  const CARDS_AMOUNT = 3;
+  for (let i = 0; i < CARDS_AMOUNT; i++) {
+    renderElement(tasksContainer, templates.taskCard());
+  }
 
 })();
