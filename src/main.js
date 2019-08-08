@@ -410,7 +410,7 @@
   const tasksContainer = boardElement.querySelector(`.board__tasks`);
 
   renderElement(tasksContainer, templates.taskForm());
-  
+
   const CARDS_AMOUNT = 3;
   for (let i = 0; i < CARDS_AMOUNT; i++) {
     renderElement(tasksContainer, templates.taskCard());
