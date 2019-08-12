@@ -5,6 +5,8 @@ import {getTaskForm} from './components/task-form';
 import {getTaskCard} from './components/task-card';
 import {getLoadButton} from './components/load-button';
 
+const CARDS_AMOUNT = 3;
+
 const renderElement = (element, template) => {
   element.insertAdjacentHTML(`beforeend`, template);
 };
@@ -26,7 +28,6 @@ const tasksContainer = boardElement.querySelector(`.board__tasks`);
 
 renderElement(tasksContainer, getTaskForm());
 
-const CARDS_AMOUNT = 3;
 for (let i = 0; i < CARDS_AMOUNT; i++) {
   renderElement(tasksContainer, getTaskCard());
 }
