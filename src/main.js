@@ -1,9 +1,9 @@
-import {getMenu} from `./components/menu`;
-import {getSearch} from `./components/search`;
-import {getFilters} from `./components/filters`;
-import {getTaskForm} from `./components/task-form`;
-import {getTaskCard} from `./components/task-card`;
-import {getLoadButton} from `./components/load-button`;
+import {getMenu} from './components/menu';
+import {getSearch} from './components/search';
+import {getFilters} from './components/filters';
+import {getTaskForm} from './components/task-form';
+import {getTaskCard} from './components/task-card';
+import {getLoadButton} from './components/load-button';
 
 const CARDS_AMOUNT = 3;
 
