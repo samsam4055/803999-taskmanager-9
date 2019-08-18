@@ -6,13 +6,13 @@ import {getTaskCard} from './components/task-card';
 import {getLoadButton} from './components/load-button';
 import {filtersList, tasksList, getTasksAmount} from "./components/data";
 
-const BATCH_SIZE = 8;
+const CARDS_AMOUNT = 8;
 
 const renderElement = (element, template) => {
   element.insertAdjacentHTML(`beforeend`, template);
 };
 
-const generateBatches = (array, batchSize = BATCH_SIZE) => {
+const generateBatches = (array, batchSize = CARDS_AMOUNT) => {
   const batchesAmount = Math.ceil(array.length / batchSize);
   return new Array(batchesAmount).fill(``).map((item, index) => array.slice(index * batchSize, (index + 1) * batchSize));
 };
@@ -28,7 +28,7 @@ renderElement(menuContainer, getMenu());
 
 const boardElement = mainContainer.querySelector(`.board`);
 
-if (getTasksAmount() > BATCH_SIZE) {
+if (getTasksAmount() > CARDS_AMOUNT) {
   renderElement(boardElement, getLoadButton());
 }
 
@@ -36,7 +36,7 @@ const tasksContainer = boardElement.querySelector(`.board__tasks`);
 
 renderElement(tasksContainer, getTaskForm());
 
-const firstBatch = (getTasksAmount() > BATCH_SIZE) ? tasksList.slice(0, BATCH_SIZE) : tasksList;
+const firstBatch = (getTasksAmount() > CARDS_AMOUNT) ? tasksList.slice(0, CARDS_AMOUNT) : tasksList;
 
 firstBatch.forEach((task) => renderElement(tasksContainer, getTaskCard(task)));
 
@@ -44,7 +44,7 @@ const loadButtonElement = document.querySelector(`.load-more`);
 let counter = 0;
 
 loadButtonElement.addEventListener(`click`, () => {
-  const batches = generateBatches(tasksList.slice(BATCH_SIZE));
+  const batches = generateBatches(tasksList.slice(CARDS_AMOUNT));
   batches[counter].forEach((item) => renderElement(tasksContainer, getTaskCard(item)));
   counter++;
   if (counter === batches.length) {
