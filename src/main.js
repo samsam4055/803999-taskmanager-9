@@ -4,17 +4,23 @@ import {getFilters} from './components/filters';
 import {getTaskForm} from './components/task-form';
 import {getTaskCard} from './components/task-card';
 import {getLoadButton} from './components/load-button';
+import {filtersList, tasksList, getTasksAmount} from "./components/data";
 
-const CARDS_AMOUNT = 3;
+const BATCH_SIZE = 8;
 
 const renderElement = (element, template) => {
   element.insertAdjacentHTML(`beforeend`, template);
 };
 
+const generateBatches = (array, batchSize = BATCH_SIZE) => {
+  const batchesAmount = Math.ceil(array.length / batchSize);
+  return new Array(batchesAmount).fill(``).map((item, index) => array.slice(index * batchSize, (index + 1) * batchSize));
+};
+
 const mainContainer = document.querySelector(`.main`);
 
 renderElement(mainContainer, getSearch());
-renderElement(mainContainer, getFilters());
+renderElement(mainContainer, getFilters(filtersList, tasksList));
 
 const menuContainer = mainContainer.querySelector(`.main__control`);
 
@@ -22,12 +28,26 @@ renderElement(menuContainer, getMenu());
 
 const boardElement = mainContainer.querySelector(`.board`);
 
-renderElement(boardElement, getLoadButton());
+if (getTasksAmount() > BATCH_SIZE) {
+  renderElement(boardElement, getLoadButton());
+}
 
 const tasksContainer = boardElement.querySelector(`.board__tasks`);
 
 renderElement(tasksContainer, getTaskForm());
 
-for (let i = 0; i < CARDS_AMOUNT; i++) {
-  renderElement(tasksContainer, getTaskCard());
-}
+const firstBatch = (getTasksAmount() > BATCH_SIZE) ? tasksList.slice(0, BATCH_SIZE) : tasksList;
+
+firstBatch.forEach((task) => renderElement(tasksContainer, getTaskCard(task)));
+
+const loadButtonElement = document.querySelector(`.load-more`);
+let counter = 0;
+
+loadButtonElement.addEventListener(`click`, () => {
+  const batches = generateBatches(tasksList.slice(BATCH_SIZE));
+  batches[counter].forEach((item) => renderElement(tasksContainer, getTaskCard(item)));
+  counter++;
+  if (counter === batches.length) {
+    boardElement.removeChild(loadButtonElement);
+  }
+});
