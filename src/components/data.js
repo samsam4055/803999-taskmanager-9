@@ -1,26 +1,30 @@
 import {getRandomNumber} from "./util";
+import {getRandomElement} from "./util";
+import {getRandomBoolean} from "./util";
 
 const FILTERS_AMOUNT = 7;
+const DESCRIPTIONS = [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`];
+const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
 
 const tasksAmount = getRandomNumber(20, 1);
 
 const getTask = () => (
   {
-    description: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`][getRandomNumber(2)],
-    dueDate: Date.now() + 1 + getRandomNumber(7, 1) * 24 * 60 * 60 * 1000,
+    description: getRandomElement(DESCRIPTIONS),
+    dueDate: Date.now() + 1 + getRandomNumber(7, 1) * 24 * getRandomNumber(60, 1) * 60 * 1000,
     repeatingDays: {
-      Mo: Boolean(getRandomNumber(1)),
-      Tu: Boolean(getRandomNumber(1)),
-      We: Boolean(getRandomNumber(1)),
-      Th: Boolean(getRandomNumber(1)),
-      Fr: Boolean(getRandomNumber(1)),
-      Sa: Boolean(getRandomNumber(1)),
-      Su: Boolean(getRandomNumber(1)),
+      Mo: getRandomBoolean(),
+      Tu: getRandomBoolean(),
+      We: getRandomBoolean(),
+      Th: getRandomBoolean(),
+      Fr: getRandomBoolean(),
+      Sa: getRandomBoolean(),
+      Su: getRandomBoolean(),
     },
     tags: new Set([`homework`, `theory`, `practice`, `intensive`, `keks`]),
-    color: [`black`, `yellow`, `blue`, `green`, `pink`][getRandomNumber(4)],
-    isFavorite: Boolean(getRandomNumber(1)),
-    isArchive: Boolean(getRandomNumber(1)),
+    color: getRandomElement(COLORS),
+    isFavorite: getRandomBoolean(),
+    isArchive: getRandomBoolean(),
   }
 );
 const getFilter = () => (
@@ -52,9 +56,13 @@ const getFilter = () => (
   }
 );
 
-const tasksList = new Array(...new Array(tasksAmount)).map(getTask);
+const tasksList = [...Array(tasksAmount)].map(getTask);
 const filtersList = new Array(...new Array(FILTERS_AMOUNT)).map((value, index) => ({title: Array.from(getFilter().titles)[index], count: getFilter().counters[Array.from(getFilter().titles)[index]]}));
 
 const getTasksAmount = () => tasksList.length;
 
-export {getTask, getFilter, tasksList, filtersList, getTasksAmount};
+const isRepeatingTask = (task) => {
+  return Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]);
+};
+
+export {getTask, tasksList, filtersList, getTasksAmount, isRepeatingTask};

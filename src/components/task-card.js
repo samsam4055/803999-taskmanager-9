@@ -1,8 +1,9 @@
 import {getRandomNumber, shuffleList} from "./util";
+import {isRepeatingTask} from "./data";
 
 export const getTaskCard = (task) => {
   return `
-    <article class="card card--${task.color} ${Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]) ? `card--repeat` : ``}">
+    <article class="card card--${task.color} ${isRepeatingTask(task) ? `card--repeat` : ``}">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">
@@ -39,8 +40,9 @@ export const getTaskCard = (task) => {
                     </div>
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
-                          ${shuffleList(task.tags).map((tag) => `<span class="card__hashtag-inner">
-                          <span class="card__hashtag-name">#${tag}</span>
+                          ${shuffleList(task.tags).map((tag) => `
+                          <span class="card__hashtag-inner">
+                            <span class="card__hashtag-name">#${tag}</span>
                           </span>`).slice(0, getRandomNumber(3)).join(` `)}
                       </div>
                     </div>

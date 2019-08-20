@@ -7,12 +7,13 @@ import {getLoadButton} from './components/load-button';
 import {filtersList, tasksList, getTasksAmount} from "./components/data";
 
 const CARDS_AMOUNT = 8;
+const MAX_BATCH_SIZE = 8;
 
 const renderElement = (element, template) => {
   element.insertAdjacentHTML(`beforeend`, template);
 };
 
-const generateBatches = (array, batchSize = CARDS_AMOUNT) => {
+const generateBatches = (array, batchSize = MAX_BATCH_SIZE) => {
   const batchesAmount = Math.ceil(array.length / batchSize);
   return new Array(batchesAmount).fill(``).map((item, index) => array.slice(index * batchSize, (index + 1) * batchSize));
 };
@@ -41,13 +42,15 @@ const firstBatch = (getTasksAmount() > CARDS_AMOUNT) ? tasksList.slice(0, CARDS_
 firstBatch.forEach((task) => renderElement(tasksContainer, getTaskCard(task)));
 
 const loadButtonElement = document.querySelector(`.load-more`);
-let counter = 0;
 
-loadButtonElement.addEventListener(`click`, () => {
-  const batches = generateBatches(tasksList.slice(CARDS_AMOUNT));
-  batches[counter].forEach((item) => renderElement(tasksContainer, getTaskCard(item)));
-  counter++;
-  if (counter === batches.length) {
-    boardElement.removeChild(loadButtonElement);
-  }
-});
+if (loadButtonElement) {
+  let counter = 0;
+
+  loadButtonElement.addEventListener(`click`, () => {
+    const batches = generateBatches(tasksList.slice(CARDS_AMOUNT));
+    batches[counter++].forEach((item) => renderElement(tasksContainer, getTaskCard(item)));
+    if (counter === batches.length) {
+      boardElement.removeChild(loadButtonElement);
+    }
+  });
+}
